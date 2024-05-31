@@ -23,6 +23,6 @@ rivemu -workspace -exec riv-jit-c asteroids.c
 ## Play the game
 <kbd>&#8593;</kbd> Thrust
 
-<kbd>&#8592;</kbd><kbd>&#8595;</kbd> Turn
+<kbd>&#8592;</kbd><kbd>&#8594;</kbd> Turn
 
 <kbd>Z</kbd> Shoot
