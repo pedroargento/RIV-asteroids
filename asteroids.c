@@ -53,15 +53,18 @@ int main() { // entry point
       ship.angle += 0.1;
     if (riv->keys[RIV_GAMEPAD_RIGHT].down)
       ship.angle -= 0.1;
+    float thrust = 0;
     if (riv->keys[RIV_GAMEPAD_UP].down) {
-      ship.dx += sin(ship.angle) * 0.2;
-      ship.dy += -cos(ship.angle) * 0.2;
+      thrust = 0.3;
+      ship.dx += sin(ship.angle) * thrust;
+      ship.dy += -cos(ship.angle) * thrust;
     }
-    ship.dx = ship.dx * 0.99;
-    ship.dy = ship.dy * 0.99;
 
     ship.x += ship.dx;
     ship.y += ship.dy;
+    
+    ship.dx *= 0.999;
+    ship.dy *= 0.999;
 
     if (ship.x < 0 - ship.size)
       ship.x = 256 + ship.size;
