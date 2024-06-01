@@ -14,10 +14,19 @@ struct SpaceObject {
 
 void draw_ship(struct SpaceObject ship) {
   riv_draw_circle_fill(ship.x, ship.y, ship.size, RIV_COLOR_WHITE);
-  // riv_draw_box_fill((int)ship.x, (int)ship.y, 5, 10, ship.angle,
-  // RIV_COLOR_BLUE);
   riv_draw_point(ship.x + ship.size * sin(ship.angle),
                  ship.y - ship.size * cos(ship.angle), RIV_COLOR_RED);
+}
+
+void wrap_around(struct SpaceObject *o) {
+  if (o->x < 0 - o->size)
+    o->x = 256 + o->size;
+  if (o->x > 256 + o->size)
+    o->x = 0 - o->size;
+  if (o->y < 0 - o->size)
+    o->y = 256 + o->size;
+  if (o->y > 256 + o->size)
+    o->y = 0 - o->size;
 }
 
 float distance(int x, int y, int xo, int yo) {
@@ -47,8 +56,6 @@ int main() { // entry point
 
   do { // main loop
     // handle inputs
-    // if (riv->keys[RIV_GAMEPAD_UP].down) cursor.posy--;
-    // if (riv->keys[RIV_GAMEPAD_DOWN].down) cursor.posy++;
     if (riv->keys[RIV_GAMEPAD_LEFT].down)
       ship.angle += 0.1;
     if (riv->keys[RIV_GAMEPAD_RIGHT].down)
@@ -62,18 +69,13 @@ int main() { // entry point
 
     ship.x += ship.dx;
     ship.y += ship.dy;
-    
+
     ship.dx *= 0.999;
     ship.dy *= 0.999;
 
-    if (ship.x < 0 - ship.size)
-      ship.x = 256 + ship.size;
-    if (ship.x > 256 + ship.size)
-      ship.x = -ship.size;
-    if (ship.y < 0 - ship.size)
-      ship.y = 256 + ship.size;
-    if (ship.y > 256 + ship.size)
-      ship.y = 0 - ship.size;
+    wrap_around(&ship);
+
+
     if (riv->keys[RIV_GAMEPAD_A1].press) {
       struct SpaceObject bullet = {
           2,          ship.x, ship.y, 5 * sin(ship.angle), -5 * cos(ship.angle),
@@ -87,18 +89,9 @@ int main() { // entry point
     draw_ship(ship);
 
     for (int i = 0; i < n_asteroids; i++) {
-      // asteroids[i].dx += sin(asteroids[i].angle)*0.2;
-      // asteroids[i].dy += -cos(asteroids[i].angle)*0.2;
       asteroids[i].x += asteroids[i].dx;
       asteroids[i].y += asteroids[i].dy;
-      if (asteroids[i].x < 0 - asteroids[i].size)
-        asteroids[i].x = 256 + asteroids[i].size;
-      if (asteroids[i].x > 256 + asteroids[i].size)
-        asteroids[i].x = 0 - asteroids[i].size;
-      if (asteroids[i].y < 0 - asteroids[i].size)
-        asteroids[i].y = 256 + asteroids[i].size;
-      if (asteroids[i].y > 256 + asteroids[i].size)
-        asteroids[i].y = 0 - asteroids[i].size;
+      wrap_around(&asteroids[i]);
       if (distance(asteroids[i].x, asteroids[i].y, ship.x, ship.y) <
           ship.size / 2 + asteroids[i].size / 2) {
         riv_draw_circle_line(asteroids[i].x, asteroids[i].y, asteroids[i].size,
