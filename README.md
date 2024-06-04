@@ -7,14 +7,14 @@ Fun personal project to test the [RIV](https://docs.rives.io/docs/riv/introducti
 ## Install RIVES
 For more details or other platforms go to [RIVES Documentation](https://docs.rives.io/docs/riv/introduction](https://docs.rives.io/docs/riv/getting-started))
 ```
-`wget -O rivemu https://github.com/rives-io/riv/releases/latest/download/rivemu-linux-amd64
+wget -O rivemu https://github.com/rives-io/riv/releases/latest/download/rivemu-linux-amd64
 chmod +x rivemu
 ```
 ```
 mkdir -p $HOME/.riv
 mv rivemu $HOME/.riv/
 echo 'export PATH=$HOME/.riv:$PATH' >> $HOME/.bashrc
-export PATH=$HOME/.riv:$PATH`
+export PATH=$HOME/.riv:$PATH
 ```
 ## Run the game
 ```
